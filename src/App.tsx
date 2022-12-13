@@ -40,11 +40,15 @@ import createCache from "@emotion/cache";
 // import { lightTheme } from "./theme/light";
 // import { ColorContext } from "./context/ColorContext";
 // import { SwitchModeButton } from './components/SwitchModeButton'
-import Routes from "./Routes";
+import Routes from "./routes";
 import ThemeProvider from "./theme/ThemeProvider";
 // import { StyledEngineProvider } from "@mui/material/styles";
 // import { ErrorBoundary } from "react-error-boundary";
 // import { ErrorFallback } from "./components";
+import { ToastContainer, toast } from "react-toastify";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
+
 import "./App.css";
 
 function App() {
@@ -67,16 +71,22 @@ function App() {
     stylisPlugins: [prefixer, rtlPlugin],
   });
   return (
-    <CacheProvider value={cacheRtl}>
-      hello
-      <ThemeProvider>
-        {/* <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[]}> */}
-        <div dir="rtl" id="full">
-          <Routes />
-        </div>
-        {/* </ErrorBoundary> */}
-      </ThemeProvider>
-    </CacheProvider>
+    <Provider store={store}>
+      <CacheProvider value={cacheRtl}>
+        <ToastContainer
+          position="top-center"
+          // autoClose={10000000000}
+          bodyClassName={() => "text-notif"}
+        />
+        <ThemeProvider>
+          {/* <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[]}> */}
+          <div dir="rtl" id="full">
+            <Routes />
+          </div>
+          {/* </ErrorBoundary> */}
+        </ThemeProvider>
+      </CacheProvider>
+    </Provider>
   );
 }
 

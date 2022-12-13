@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useGroupManagementsStyle from "./useGroupManagementsPage.style";
-// import { Card, Menu, MenuItem, Carousel } from "../../../components";
 import cs from "classnames";
 import { Form, Table } from "../../../components";
 import { useNavigate } from "react-router-dom";
@@ -12,55 +11,15 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import ReplayIcon from "@mui/icons-material/Replay";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { getSearchItems, getGridColumn } from "../../../services/api";
+import { useSearchParams, useLocation } from "react-router-dom";
 
 export default function GroupManagements() {
   const classes = useGroupManagementsStyle();
-  const navigate = useNavigate();
-  const [moreIconAnchorEl, setMoreIconAnchorEl] = useState(null);
+  let location = useLocation();
+  const { pathname } = location;
+  const [formSchema, setFormSchema] = useState(null);
 
-  const formSchema = {
-    onCreate: {
-      url: "/login",
-      method: "POST",
-    },
-    onUpdate: {},
-    sections: [
-      {
-        name: "privateInformationSection",
-        fields: [
-          {
-            label: "نام",
-            name: "username",
-            placeholder: "Enter the user name",
-            type: "text",
-            initialValue: "",
-            defaultValue: null,
-            grid: { xs: 3 },
-          },
-          {
-            label: "نام خانوادگی ",
-            name: "password",
-            placeholder: "Enter the password ",
-            type: "password",
-            initialValue: "",
-            defaultValue: null,
-            grid: { xs: 3 },
-          },
-          {
-            label: "انتخاب نوع ",
-            name: "type",
-            placeholder: "Enter the password ",
-            type: "dropdown",
-            initialValue: "",
-            defaultValue: null,
-            options: [{ label: "نوع ۱", value: "نوع ۱" }],
-            onChange: () => {},
-            grid: { xs: 3 },
-          },
-        ],
-      },
-    ],
-  };
   const handleSubmit = () => {};
 
   const tableActions = [
@@ -81,10 +40,25 @@ export default function GroupManagements() {
     { type: "filter", title: "نمایش فیلتر ", icon: <FilterAltIcon /> },
     { type: "recovery", title: "بازیابی", icon: <ReplayIcon /> },
   ];
+
+  const fetchSearchItems = async (url: any) => {
+    try {
+      const res: any = await getSearchItems(url);
+      setFormSchema(res?.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    !!pathname && fetchSearchItems(pathname);
+  }, []);
+
   return (
     <div className={cs(classes.container)}>
-      <Form formData={formSchema} onFormSubmit={handleSubmit} />
-      <Table tableActions={tableActions} />
+      {formSchema && <Form formData={formSchema} onFormSubmit={handleSubmit} />}
+      <Table
+        columnURl={`${pathname}/getGridColumn`}
+        tableActions={tableActions}
+      />
     </div>
   );
 }

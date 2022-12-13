@@ -58,7 +58,7 @@ export default function HomePage() {
   return (
     <div className={cs(classes.container)}>
       <Form formData={formSchema} onFormSubmit={handleSubmit} />
-      <Table />
+      {/* <Table /> */}
     </div>
   );
 }

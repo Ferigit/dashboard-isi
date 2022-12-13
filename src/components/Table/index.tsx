@@ -1,43 +1,61 @@
-import React, { useState, useEffect } from "react";
-// import { DataGrid, GridRowsProp } from "@mui/x-data-grid";
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
+import { useState, useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
 import { Button } from "../../components";
 import useTableStyle from "./useTable.style";
+import { getGridColumn, getGridData } from "../../services/api";
 
 const Table = (props: any) => {
-  const { tableActions } = props;
-  const classes = useTableStyle();
-  const rows: GridRowsProp = [
-    { id: 1, col1: "آینم ۱", col2: "آیتم ۱" },
-    { id: 2, col1: "آیتم ۲ ", col2: "آیتم ۱ " },
-    { id: 3, col1: "آیتم ۳ ", col2: "آیتم ۱ " },
-  ];
+  const { tableActions, columnURl } = props;
+  const [uiData, setUiData] = useState<any>(null);
+  const [rows, setRows] = useState<any>(null);
 
-  const columns: GridColDef[] = [
-    { field: "col1", headerName: "نام ", width: 150 },
-    { field: "col2", headerName: "نام خانوادگی", width: 150 },
-  ];
+  const classes = useTableStyle();
+
+  const fetchGridColumn = async () => {
+    try {
+      const res: any = await getGridColumn(columnURl);
+
+      setUiData(res?.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    !!columnURl && fetchGridColumn();
+  }, []);
+
+  const fetchGridData = async () => {
+    try {
+      const res: any = await getGridData(columnURl);
+      setRows(res?.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    !!uiData?.url && fetchGridData();
+  }, [uiData]);
 
   return (
     <div className={classes.container}>
       <div className={classes.actionContainer}>
-        {tableActions.map((item: any) => (
+        {tableActions?.map((item: any) => (
           <span className={classes.actionBtn}>
             <Button title={item.title} icon={item.icon} />
           </span>
         ))}
       </div>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: "تعداد سطر بر صفحه ",
-          },
-        }}
-        checkboxSelection
-        disableSelectionOnClick
-      />
+      {uiData && rows && (
+        <DataGrid
+          rows={rows.rows ?? []}
+          columns={uiData?.columns}
+          componentsProps={{
+            pagination: {
+              labelRowsPerPage: "تعداد سطر بر صفحه ",
+            },
+          }}
+          checkboxSelection
+          disableSelectionOnClick
+        />
+      )}
     </div>
   );
 };
