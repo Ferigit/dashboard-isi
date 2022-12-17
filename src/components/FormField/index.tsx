@@ -1,6 +1,13 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Form as CForm, SubmitButton } from "./FormElements";
-import { TextField, AutoCompleteField, NumberField } from "../../components";
+import {
+  TextField,
+  AutoCompleteField,
+  NumberField,
+  Calendar,
+  CheckboxField,
+  RadioGroup,
+} from "../../components";
 import DropDown from "../AutoCompleteField";
 import { useStyles } from "./styles";
 import * as Yup from "yup";
@@ -80,6 +87,15 @@ function Form({ formData: formJsonSchema, onFormSubmit }: any) {
 
     if (elementSchema.type === "dropdown") {
       return <AutoCompleteField {...props} />;
+    }
+    if (elementSchema.type === "calendar") {
+      return <Calendar {...props} />;
+    }
+    if (elementSchema.type === "checkbox") {
+      return <CheckboxField {...props} />;
+    }
+    if (elementSchema.type === "radiogroup") {
+      return <RadioGroup {...props} />;
     }
   };
 
