@@ -4,10 +4,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import useStyles from "./useButton.style";
 
-export default function Button({ title, icon }: any) {
+export default function Button({ title, icon, type='submit',onClick }: any) {
   const classes = useStyles();
   return (
-    <MButton variant="outlined" startIcon={icon} className={classes.container}>
+    <MButton variant="outlined" startIcon={icon} className={classes.container} type={type} onClick={()=>onClick()}>
       {title}
     </MButton>
   );

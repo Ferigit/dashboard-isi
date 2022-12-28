@@ -22,9 +22,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import { getMenu } from "../../services/api";
 import { iconsMap } from "./IconsMap";
-import { setMenu, getAuthState } from "../../store/slices/authSlice";
+import {
+  setMenu,
+  setMenuTabs,
+  getAuthState,
+} from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from "../../store/store";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { componentsMap } from "../../routes/componentsMap";
+import "react-tabs/style/react-tabs.css";
+// import { Tabs, TabPane } from "rc-tabs";
+// import TabPane from "rc-tabs";
 
 const drawerWidth = 240;
 
@@ -120,9 +129,15 @@ const MenuItem = ({ item }: any) => {
 };
 const SingleLevel = ({ item }: any) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const { menuTabs }: any = useSelector(getAuthState);
+  const handleAddTab = (tab: string) => {
+    console.log("handleAddTab: ", tab);
+    if (menuTabs.indexOf(tab) < 0)
+      dispatch(setMenuTabs([...menuTabs, item.to]));
+  };
   return (
-    <ListItem button onClick={() => navigate(item.to)}>
+    <ListItem button onClick={() => handleAddTab(item.to)}>
       <ListItemIcon>{iconsMap[item.icon]}</ListItemIcon>
       <ListItemText primary={item.title} />
     </ListItem>
@@ -156,9 +171,25 @@ const MultiLevel = ({ item }: any) => {
 export default function MiniDrawer({ children }: any) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const { menu }: any = useSelector(getAuthState);
   console.log("redux menu: ", menu);
-
+  const { menuTabs }: any = useSelector(getAuthState);
+  let breadCrupm = "";
+  menu?.map((item: any) => {
+    if (item.items) {
+      item?.items?.map((in_item: any) => {
+        if (in_item.items) {
+          in_item?.items?.map((in_2_item: any) => {
+            if (in_2_item.to === menuTabs[selectedIndex]) {
+              breadCrupm = in_2_item.breadCrump;
+            }
+          });
+        }
+      });
+    }
+  });
+  console.log("breadCrupm: ", breadCrupm);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -166,7 +197,20 @@ export default function MiniDrawer({ children }: any) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const dispatch = useDispatch();
 
+  const tabNamesMap: any = {
+    "/group": "Rules",
+    "/rules": "Groups",
+  };
+
+  const getTabTitle = (tab: string) => {
+    return tabNamesMap[tab];
+  };
+  const handleCloseTab = (tab: string) => {
+    dispatch(setMenuTabs(menuTabs.filter((item: any) => item !== tab)));
+  };
+  console.log("tabContent menuTabs: ", menuTabs);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -219,8 +263,26 @@ export default function MiniDrawer({ children }: any) {
         sx={{ flexGrow: 1, p: 3, paddingLeft: !open ? 5 : "" }}
       >
         <DrawerHeader />
-
-        {children}
+        <Tabs
+          selectedIndex={selectedIndex}
+          onSelect={(index) => {
+            console.log("active tab is: ", index);
+            setSelectedIndex(index);
+          }}
+        >
+          <TabList>
+            {menuTabs.map((tab: any) => (
+              <Tab>
+                {getTabTitle(tab)}{" "}
+                <span onClick={() => handleCloseTab(tab)}>X</span>
+              </Tab>
+            ))}
+          </TabList>
+          <h6>{breadCrupm}</h6>
+          {menuTabs.map((tabContent: any) => (
+            <TabPanel>{componentsMap[tabContent]}</TabPanel>
+          ))}
+        </Tabs>
       </Box>
     </Box>
   );

@@ -19,8 +19,15 @@ export default function GroupManagements() {
   let location = useLocation();
   const { pathname } = location;
   const [formSchema, setFormSchema] = useState(null);
+  const [tableFilters, setTableFilters] = useState<any>({});
 
-  const handleSubmit = () => {};
+  const handleSubmit = (data:any) => {
+    console.log("data is:",data)
+    setTableFilters({
+      username:"test",
+      lastname:"test"
+    })
+  };
 
   const tableActions = [
     { type: "news", title: "جدید", icon: <AddIcon /> },
@@ -51,13 +58,16 @@ export default function GroupManagements() {
   useEffect(() => {
     !!pathname && fetchSearchItems(pathname);
   }, []);
-
+console.log("tableFilters: ",pathname,tableFilters)
   return (
     <div className={cs(classes.container)}>
       {formSchema && <Form formData={formSchema} onFormSubmit={handleSubmit} />}
       <Table
         columnURl={`${pathname}/getGridColumn`}
+        dataURl={`${pathname}/getGridData`}
+
         tableActions={tableActions}
+        tableFilters={tableFilters}
       />
     </div>
   );

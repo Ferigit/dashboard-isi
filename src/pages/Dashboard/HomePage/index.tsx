@@ -57,7 +57,7 @@ export default function HomePage() {
   const handleSubmit = () => {};
   return (
     <div className={cs(classes.container)}>
-      <Form formData={formSchema} onFormSubmit={handleSubmit} />
+      {/*<Form formData={formSchema} onFormSubmit={handleSubmit} />*/}
       {/* <Table /> */}
     </div>
   );

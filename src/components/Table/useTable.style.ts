@@ -3,7 +3,7 @@ import makeStyles from "../../theme/helpers";
 const useTableStyle = makeStyles(
   ({ spacing, palette }) => ({
     container: {
-      height: 480,
+      height: 420,
       width: "100%",
       background: "#fff",
       marginTop: 20,

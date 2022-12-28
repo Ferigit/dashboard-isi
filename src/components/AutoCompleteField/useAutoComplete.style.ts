@@ -17,6 +17,7 @@ const useAutoCompleteStyle = makeStyles(
       display: "flex",
       alignItems: "flex-start",
       flexDirection: "column",
+      marginTop: 8,
     },
     option: {
       margin: spacing(1),
