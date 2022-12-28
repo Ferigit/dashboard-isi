@@ -253,9 +253,11 @@ function PForm({ formData: formJsonSchema, onFormSubmit }: any) {
             );
           })}
         </Grid>
-        <div className={styles.submitBtnContainer}>
-          <SubmitButton title="Submit" />
-        </div>
+        <Grid item xs={3}>
+          <div className={styles.submitBtnContainer}>
+            <SubmitButton title="ثبت" />
+          </div>
+        </Grid>
       </Form>
     </div>
   );

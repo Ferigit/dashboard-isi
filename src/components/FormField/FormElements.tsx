@@ -67,7 +67,20 @@ export function SubmitButton(props: any) {
   const { isSubmitting } = useFormikContext();
 
   return (
-    <button type="submit" {...rest} disabled={isSubmitting}>
+    <button
+      style={{
+        padding: "8px 12px",
+        background: "rgb(94,62,223)",
+        color: "#fff",
+        fontSize: 18,
+        minWidth: 120,
+        borderRadius: 12,
+        cursor: "pointer",
+      }}
+      type="submit"
+      {...rest}
+      disabled={isSubmitting}
+    >
       {title}
     </button>
   );
