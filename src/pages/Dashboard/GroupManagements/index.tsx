@@ -21,16 +21,16 @@ export default function GroupManagements() {
   const [formSchema, setFormSchema] = useState(null);
   const [tableFilters, setTableFilters] = useState<any>({});
 
-  const handleSubmit = (data:any) => {
-    console.log("data is:",data)
+  const handleSubmit = (data: any) => {
+    console.log("data is:", data);
     setTableFilters({
-      username:"test",
-      lastname:"test"
-    })
+      username: "test",
+      lastname: "test",
+    });
   };
 
   const tableActions = [
-    { type: "news", title: "جدید", icon: <AddIcon /> },
+    { type: "new", title: "جدید", icon: <AddIcon /> },
     {
       type: "removeSelected",
       title: "حذف موارد انتخابی",
@@ -58,16 +58,24 @@ export default function GroupManagements() {
   useEffect(() => {
     !!pathname && fetchSearchItems(pathname);
   }, []);
-console.log("tableFilters: ",pathname,tableFilters)
+
+  const NewForm: any = (
+    <div className={classes.newFormContainer}>
+      <p className={classes.newFormHeader}>ایجاد جدید</p>
+      {formSchema && <Form formData={formSchema} onFormSubmit={handleSubmit} />}
+    </div>
+  );
+
+  console.log("tableFilters: ", pathname, tableFilters);
   return (
     <div className={cs(classes.container)}>
       {formSchema && <Form formData={formSchema} onFormSubmit={handleSubmit} />}
       <Table
         columnURl={`${pathname}/getGridColumn`}
         dataURl={`${pathname}/getGridData`}
-
         tableActions={tableActions}
         tableFilters={tableFilters}
+        newForm={NewForm}
       />
     </div>
   );

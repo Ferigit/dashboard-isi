@@ -10,3 +10,4 @@ export { default as Calendar } from "./Calendar";
 export { default as CheckboxField } from "./CheckboxField";
 export { default as RadioGroup } from "./RadioGroup";
 export { default as DropDown } from "./DropDown";
+export { default as Modal } from "./Modal";

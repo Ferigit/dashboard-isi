@@ -55,6 +55,12 @@ const useGroupManagementsStyle = makeStyles(
         width: "90% !important",
       },
     },
+    newFormContainer: {},
+    newFormHeader: {
+      textAlign: "right",
+      fontWeight: 700,
+      fontSize: 20,
+    },
   }),
   { name: "useGroupManagementsStyle" }
 );
