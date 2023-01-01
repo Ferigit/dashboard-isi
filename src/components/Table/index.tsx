@@ -18,7 +18,14 @@ const getRowsFromCurrentPage = ({ apiRef }: GridCsvGetRowsToExportParams) =>
   gridPaginatedVisibleSortedGridRowIdsSelector(apiRef);
 
 const Table = (props: any) => {
-  const { tableActions, columnURl, tableFilters, dataURl, newForm } = props;
+  const {
+    tableActions,
+    columnURl,
+    tableFilters,
+    dataURl,
+    newForm,
+    setTableFilters,
+  } = props;
   const [uiData, setUiData] = useState<any>(null);
 
   const [openNew, setOpenNew] = useState(false);
@@ -107,6 +114,12 @@ const Table = (props: any) => {
         }
         case "exportPDF": {
           handleExportPDF({ getRowsToExport: getRowsFromCurrentPage });
+          break;
+        }
+        case "reset": {
+          // handleExportPDF({ getRowsToExport: getRowsFromCurrentPage });
+          // handleResetTable();
+          setTableFilters({ pageNum: 1, pageSize: 1 });
           break;
         }
         default:

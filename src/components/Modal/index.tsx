@@ -30,7 +30,7 @@ const Modal = (props: any) => {
   return (
     <MUIDialog
       data-testid={dataTestId}
-      // className={cs(className, styles.root)}
+      className={cs(className, styles.root)}
       onClose={onClose}
       aria-labelledby="customized-dialog-title"
       open={open}

@@ -255,7 +255,7 @@ function PForm({ formData: formJsonSchema, onFormSubmit }: any) {
         </Grid>
         <Grid item xs={3}>
           <div className={styles.submitBtnContainer}>
-            <SubmitButton title="ثبت" />
+            <SubmitButton title="جستجو" />
           </div>
         </Grid>
       </Form>

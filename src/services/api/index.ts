@@ -50,8 +50,8 @@ const formSchema = {
     fields: [
       {
         label: "نام",
-        name: "username",
-        placeholder: "Enter the user name",
+        name: "name",
+        placeholder: "نام را وارد نمایید",
         type: "text",
         initialValue: "",
         defaultValue: null,
@@ -59,9 +59,9 @@ const formSchema = {
       },
       {
         label: "نام خانوادگی ",
-        name: "password",
-        placeholder: "Enter the password ",
-        type: "password",
+        name: "lastname",
+        placeholder: "نام خانوادگی را وارد نمایید",
+        type: "text",
         initialValue: "",
         defaultValue: null,
         grid: { xs: 3 },
@@ -74,6 +74,7 @@ const formSchema = {
         initialValue: "",
         defaultValue: null,
         options: [
+          { label: "همه", value: 3 },
           { label: "مرد", value: 1 },
           { label: "زن", value: 2 },
         ],
@@ -83,27 +84,31 @@ const formSchema = {
       {
         label: "انتخاب نوع ",
         name: "type",
-        placeholder: "Enter the password ",
+        placeholder: "نوع را وارد نمایید ",
         type: "autocomplete",
         initialValue: "",
         defaultValue: null,
-        options: [{ label: "نوع ۱", value: "نوع ۱" }],
+        options: [
+          { label: "همه", value: 3 },
+          { label: "نوع ۱", value: 1 },
+          { label: "نوع ۲", value: 2 },
+        ],
         onChange: () => {},
         grid: { xs: 3 },
       },
       {
         label: "تاریخ ",
-        name: "calendar",
-        placeholder: "Enter the date ",
+        name: "startdate",
+        placeholder: "تاریخ شروع ",
         type: "calendar",
         initialValue: "",
         defaultValue: null,
         grid: { xs: 3 },
       },
       {
-        label: "لیست ",
-        name: "list",
-        placeholder: "Enter the date ",
+        label: "دسته بندی",
+        name: "group",
+        placeholder: "دسته بندی  ",
         type: "radiogroup",
         inputType: "checkbox",
         // type: "radiogroup",
@@ -112,15 +117,15 @@ const formSchema = {
         defaultValue: null,
         grid: { xs: 3 },
         options: [
-          { label: "Female", value: "female" },
-          { label: "Male", value: "male" },
-          { label: "Other", value: "other" },
+          { label: "اول", value: "اول" },
+          { label: "دوم", value: "دوم" },
+          { label: "سوم", value: "سوم" },
         ],
       },
       {
-        label: "تایید قوانین ",
+        label: "تایید شده ",
         name: "checkbox",
-        placeholder: "Enter the date ",
+        placeholder: "تایید شده ",
         type: "checkbox",
         initialValue: "",
         defaultValue: null,
@@ -166,8 +171,13 @@ export const getSearchItems = async (url: string) => {
 const gridColumns = {
   url: "/group/getGridColumn",
   columns: [
-    { field: "col1", headerName: "نام ", width: 150 },
-    { field: "col2", headerName: "نام خانوادگی", width: 150 },
+    { field: "name", headerName: "نام ", width: 150 },
+    { field: "lastname", headerName: "نام خانوادگی", width: 150 },
+    { field: "gender", headerName: "جنسیت", width: 150 },
+    { field: "itemType", headerName: "نوع", width: 150 },
+    { field: "startdate", headerName: "تاریخ شروع", width: 150 },
+    { field: "group", headerName: "نوع گروه", width: 150 },
+    { field: "checkbox", headerName: "وضعیت", width: 150 },
   ],
 };
 export const getGridColumn = async (url: string) => {
@@ -185,15 +195,96 @@ const gridData: any = {
   // pageNumber: 1,
   total: 9,
   rows: [
-    { id: 1, col1: "آینم ۱", col2: "آیتم ۱" },
-    { id: 2, col1: "آیتم ۲ ", col2: "آیتم ۲ " },
-    { id: 3, col1: "آیتم ۳ ", col2: "آیتم ۳ " },
-    { id: 4, col1: "آینم ۴", col2: "آیتم ۴" },
-    { id: 5, col1: "آیتم ۵ ", col2: "آیتم ۵ " },
-    { id: 6, col1: "آیتم ۶ ", col2: "آیتم ۶ " },
-    { id: 7, col1: "آینم ۷", col2: "آیتم ۷" },
-    { id: 8, col1: "آیتم ۸ ", col2: "آیتم ۸ " },
-    { id: 9, col1: "آیتم ۹ ", col2: "آیتم ۹ " },
+    {
+      id: 1,
+      name: "امنیت ۱",
+      lastname: "امنیتی ",
+      gender: "مرد",
+      itemType: "نوع ۱",
+      group: "گروه ۱",
+      checkbox: "تایید شده",
+      startdate: "1401-10-11",
+    },
+    {
+      id: 2,
+      name: "امنیت ۲",
+      lastname: "امنیت ۲",
+      gender: "زن",
+      itemType: "نوع ۲",
+      group: "گروه ۲",
+      checkbox: "تایید شده",
+      startdate: "1401-10-12",
+    },
+    {
+      id: 3,
+      name: "امنیت ۳",
+      lastname: "امنیت ۳",
+      gender: "مرد",
+      itemType: "نوع ۳",
+      group: "گروه ۳",
+      checkbox: "تایید شده",
+      startdate: "1401-10-12",
+    },
+    {
+      id: 4,
+      name: "امنیت ۴",
+      lastname: "امنیت ۴",
+      gender: "زن",
+      itemType: "نوع ۴",
+      group: "گروه ۴",
+      checkbox: "تایید شده",
+      startdate: "1401-10-14",
+    },
+    {
+      id: 5,
+      name: "امنیت ۵",
+      lastname: "امنیت ۵",
+      gender: "مرد",
+      itemType: "نوع ۶",
+      group: "گروه ۶",
+      checkbox: "تایید شده",
+      startdate: "1401-10-15",
+    },
+    {
+      id: 6,
+      name: "امنیت ۶",
+      lastname: "امنیت ۶",
+      gender: "زن",
+      itemType: "نوع ۱",
+      group: "گروه ۶",
+      checkbox: "تایید شده",
+      startdate: "1401-10-16",
+    },
+    {
+      id: 6,
+      name: "امنیت ۶",
+      lastname: "امنیت ۷",
+      gender: "مرد",
+      itemType: "نوع ۶",
+      group: "گروه ۶",
+      checkbox: "تایید شده",
+      startdate: "1401-10-17",
+    },
+    {
+      id: 7,
+      name: "امنیت ۷",
+      lastname: "امنیت ۷",
+      gender: "زن",
+      itemType: "نوع ۷",
+      group: "گروه ۷",
+      checkbox: "تایید شده",
+      startdate: "1401-10-18",
+    },
+    {
+      id: 8,
+      name: "امنیت ۸",
+      lastname: "امنیت ۸",
+      gender: "مرد",
+      itemType: "نوع ۸",
+      group: "گروه ۸",
+      checkbox: "تایید شده",
+      startdate: "1401-10-19",
+    },
   ],
 };
 
@@ -213,13 +304,36 @@ export const getGridData = async (url: string, tableFilters: any) => {
     (pageNum + 1) * pageSize,
     tableFilters
   );
-
+  let arr1 = gridData?.rows?.slice(
+    pageNum * pageSize,
+    (pageNum + 1) * pageSize
+  );
+  let arr2 = arr1.filter((item: any) => {
+    let ok = true;
+    Object.keys(tableFilters).map((key: string) => {
+      console.log(
+        "check:",
+        item?.[key]?.includes(tableFilters?.[key]),
+        !!tableFilters?.[key]
+      );
+      if (
+        !!tableFilters?.[key] &&
+        !item?.[key]?.includes(tableFilters?.[key]) &&
+        key !== "pageNum" &&
+        key !== "pageSize"
+      ) {
+        ok = false;
+      }
+    });
+    return ok;
+  });
+  console.log("arr2: ", Object.keys(tableFilters), arr2);
   try {
     // const res = await Api.post(url, tableFilters);
     const res = await getFakeData();
 
     return {
-      data: gridData?.rows?.slice(pageNum * pageSize, (pageNum + 1) * pageSize),
+      data: arr2, //gridData?.rows?.slice(pageNum * pageSize, (pageNum + 1) * pageSize),
       total: 9,
     }; //res.data;
   } catch (error) {

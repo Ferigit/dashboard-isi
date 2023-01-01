@@ -13,6 +13,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { getSearchItems, getGridColumn } from "../../../services/api";
 import { useSearchParams, useLocation } from "react-router-dom";
+import moment from "jalali-moment";
 
 export default function GroupManagements() {
   const classes = useGroupManagementsStyle();
@@ -21,11 +22,35 @@ export default function GroupManagements() {
   const [formSchema, setFormSchema] = useState(null);
   const [tableFilters, setTableFilters] = useState<any>({});
 
-  const handleSubmit = (data: any) => {
-    console.log("data is:", data);
+  const handleSubmit = (payload: any) => {
+    console.log("payload is:", payload);
+    // setTableFilters({
+    //   ...tableFilters,
+    //   name: payload.name,
+    //   lastname: payload.lastname,
+    //   gender: payload.gender,
+    //   itemType: payload.itemType,
+    //   group: payload.group,
+    //   checkbox: payload.checkbox,
+    //   startdate: payload.startdate,
+    // });
+  };
+  const handleSearchSubmit = (payload: any) => {
+    console.log("search payload:", payload);
     setTableFilters({
-      username: "test",
-      lastname: "test",
+      ...tableFilters,
+      name: payload.name,
+      lastname: payload.lastname,
+      gender: payload.gender === 1 ? "مرد" : payload.gender === 2 ? "زن" : null,
+      itemType:
+        payload.itemType === 1
+          ? "نوع ۱"
+          : payload.itemType === 2
+          ? "نوع ۲"
+          : null,
+      group: payload.group,
+      checkbox: payload.checkbox,
+      startdate: moment(payload.startdate).format("jYYYY-jMM-jDD"),
     });
   };
 
@@ -45,7 +70,7 @@ export default function GroupManagements() {
     },
     { type: "advancedSearch", title: "جستجوی پیشرفته", icon: <ZoomInIcon /> },
     { type: "filter", title: "نمایش فیلتر ", icon: <FilterAltIcon /> },
-    { type: "recovery", title: "بازیابی", icon: <ReplayIcon /> },
+    { type: "reset", title: "بازیابی", icon: <ReplayIcon /> },
   ];
 
   const fetchSearchItems = async (url: any) => {
@@ -69,13 +94,16 @@ export default function GroupManagements() {
   console.log("tableFilters: ", pathname, tableFilters);
   return (
     <div className={cs(classes.container)}>
-      {formSchema && <Form formData={formSchema} onFormSubmit={handleSubmit} />}
+      {formSchema && (
+        <Form formData={formSchema} onFormSubmit={handleSearchSubmit} />
+      )}
       <Table
         columnURl={`${pathname}/getGridColumn`}
         dataURl={`${pathname}/getGridData`}
         tableActions={tableActions}
         tableFilters={tableFilters}
         newForm={NewForm}
+        setTableFilters={setTableFilters}
       />
     </div>
   );
