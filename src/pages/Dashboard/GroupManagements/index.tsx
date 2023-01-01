@@ -50,7 +50,9 @@ export default function GroupManagements() {
           : null,
       group: payload.group,
       checkbox: payload.checkbox,
-      startdate: moment(payload.startdate).format("jYYYY-jMM-jDD"),
+      startdate: payload.startdate
+        ? moment(payload.startdate).format("jYYYY-jMM-jDD")
+        : null,
     });
   };
 

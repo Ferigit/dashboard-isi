@@ -1,13 +1,11 @@
-import * as React from "react";
-// import TextField from "@mui/material/TextField";
+import React, { useState, useEffect } from "react";
 import AdapterJalali from "@date-io/date-fns-jalali";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useFormikContext, Formik, Form, Field, ErrorMessage } from "formik";
 import { TextField as MTextField } from "@mui/material";
-// import { useStyles } from "./styles";
 import { makeStyles } from "@mui/styles";
-
+import { CloseRounded } from "@mui/icons-material";
 const styles = (theme: any) => ({
   textField: {
     width: "90%",
@@ -22,79 +20,37 @@ const styles = (theme: any) => ({
   },
 });
 
-// export default function Calendar(props: any) {
-//   const [value, setValue] = React.useState<Date | null>(new Date(2022, 3, 7));
-//   const classes = styles(null);
-//   // const { values, submitForm, setValues } = useFormikContext();
-
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterJalali}>
-//       <DatePicker
-//         mask="____/__/__"
-//         value={value}
-//         onChange={(newValue: any) => {
-//           setValue(newValue);
-//           // setValues(props.name, newValue);
-//         }}
-//         renderInput={(params) => (
-//           <TextField
-//             // className={classes.textField}
-//             // InputProps={{
-//             //   className: classes.input,
-//             // }}
-//             InputProps={{
-//               style: {
-//                 fontSize: 14,
-//                 height: 45,
-//                 borderRadius: 12,
-//                 background: "#fff",
-//               },
-//             }}
-//             {...params}
-//           />
-//         )}
-//       />
-//     </LocalizationProvider>
-//   );
-// }
-
 export const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
+    position: "relative",
+  },
+  closeIcon: {
+    position: "absolute",
+    left: 34,
+    top: 10,
+    cursor: "pointer",
   },
 }));
 
 const TextField = (props: any) => {
   const styles = useStyles();
   const { name, label, placeholder } = props;
-  // const [localvalue, set]
+
   const CustomInput = ({ field, form, ...props }: any) => {
-    console.log("field, form: ", field, form);
     return (
       <LocalizationProvider dateAdapter={AdapterJalali}>
         <DatePicker
           mask="____/__/__"
-          value={form?.values?.[field?.name]} //value}
+          value={form?.values?.[field?.name]}
           onChange={(newValue: any) => {
-            console.log("calendar: ", newValue);
-            // form?.onChange(newValue);
             form?.setFieldValue(field?.name, newValue);
-
-            // form?.
-            // setValue(newValue);
-            // setValues(props.name, newValue);
           }}
-          // value={form?.value}
-          // onChange={form?.onChange}
           renderInput={(params) => (
             <MTextField
-              // className={classes.textField}
-              // InputProps={{
-              //   className: classes.input,
-              // }}
               InputProps={{
                 style: {
                   fontSize: 14,
@@ -104,36 +60,21 @@ const TextField = (props: any) => {
                 },
               }}
               {...params}
-              // {...field}
-              // {...props}
             />
           )}
         />
+        {!!form?.values?.[field?.name] ? (
+          <span
+            className={styles.closeIcon}
+            onClick={() => {
+              form?.setFieldValue(field?.name, null);
+            }}
+          >
+            <CloseRounded />
+          </span>
+        ) : null}
       </LocalizationProvider>
     );
-    // return (
-    //   <MTextField
-    //     placeholder={placeholder}
-    //     label={label}
-    //     InputProps={{
-    //       style: {
-    //         fontSize: 14,
-    //         height: 45,
-    //         borderRadius: 12,
-    //         background: "#fff",
-    //       },
-    //       endAdornment: props?.endAdornment ? (
-    //         <InputAdornment position="start">
-    //           {props?.endAdornment}
-    //         </InputAdornment>
-    //       ) : (
-    //         ""
-    //       ),
-    //     }}
-    //     {...field}
-    //     {...props}
-    //   />
-    // );
   };
 
   return (
